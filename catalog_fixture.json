@@ -1,0 +1,70 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Молочные продукты",
+        "description": "Вкусные и всегда свежие молочные продукты"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "name": "Мясопродукты",
+        "description": "Вкусные и всегда свежие мясные продукты"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Молоко",
+        "description": null,
+        "image": "",
+        "category": 1,
+        "price": 100,
+        "created_at": "2025-07-17",
+        "updated_at": "2025-07-17"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+        "name": "Кефир",
+        "description": null,
+        "image": "",
+        "category": 1,
+        "price": 80,
+        "created_at": "2025-07-17",
+        "updated_at": "2025-07-17"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Филе",
+        "description": null,
+        "image": "",
+        "category": 2,
+        "price": 350,
+        "created_at": "2025-07-17",
+        "updated_at": "2025-07-17"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+        "name": "Ребра",
+        "description": null,
+        "image": "",
+        "category": 2,
+        "price": 440,
+        "created_at": "2025-07-17",
+        "updated_at": "2025-07-17"
+    }
+}
+]
