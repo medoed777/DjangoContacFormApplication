@@ -71,3 +71,18 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Contact(models.Model):
+    country = models.CharField(max_length=100, verbose_name="Страна", help_text="Введите название страны")
+    inn = models.CharField(max_length=15, verbose_name="ИНН", help_text="Введите инн организации", blank=True, null=True,)
+    address = models.TextField(verbose_name="Адрес", help_text="Введите адрес организации", blank=True, null=True,)
+    email = models.EmailField(blank=True, null=True,)
+
+    class Meta:
+        verbose_name = "Контакт"
+        verbose_name_plural = "Контакты"
+        ordering = ["country"]
+
+    def __str__(self):
+        return self.country
