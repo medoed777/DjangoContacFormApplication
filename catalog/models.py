@@ -35,7 +35,7 @@ class Product(models.Model):
         null=True,
     )
     image = models.ImageField(
-        upload_to="product/",
+        upload_to="products/image",
         blank=True,
         null=True,
         verbose_name="Изображение",
@@ -74,10 +74,26 @@ class Product(models.Model):
 
 
 class Contact(models.Model):
-    country = models.CharField(max_length=100, verbose_name="Страна", help_text="Введите название страны")
-    inn = models.CharField(max_length=15, verbose_name="ИНН", help_text="Введите инн организации", blank=True, null=True,)
-    address = models.TextField(verbose_name="Адрес", help_text="Введите адрес организации", blank=True, null=True,)
-    email = models.EmailField(blank=True, null=True,)
+    country = models.CharField(
+        max_length=100, verbose_name="Страна", help_text="Введите название страны"
+    )
+    inn = models.CharField(
+        max_length=15,
+        verbose_name="ИНН",
+        help_text="Введите инн организации",
+        blank=True,
+        null=True,
+    )
+    address = models.TextField(
+        verbose_name="Адрес",
+        help_text="Введите адрес организации",
+        blank=True,
+        null=True,
+    )
+    email = models.EmailField(
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = "Контакт"
