@@ -22,7 +22,7 @@ class Command(BaseCommand):
             product, created = Product.objects.get_or_create(**product_data)
             if created:
                 self.stdout.write(
-                    self.style.SUCCESS(f"Successfully added product: {product.name}")
+                    self.style.SUCCESS(f"Successfully added products: {product.name}")
                 )
             else:
                 self.stdout.write(
