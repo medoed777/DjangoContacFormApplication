@@ -11,7 +11,7 @@
                 <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
             </div>
             <div class="card-body">
-                <img src="{{ products.image | media_filter}}" class="card-img-top" style="max-height: 300px;">
+                <img src="{{ product.image | media_filter}}" class="card-img-top" style="max-height: 300px;">
                 <h5 class="card-title pricing-card-title">{{ product.price }} RUB</h5>
                 <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                     <p>{{ product.description|truncatechars:100 }}</p>
