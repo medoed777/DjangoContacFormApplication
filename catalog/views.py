@@ -1,16 +1,17 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse
+from django.shortcuts import render, get_object_or_404
 from catalog.models import Product, Contact
 
 
-def home(request):
-    latest_products = Product.objects.order_by('created_at')[:5]
+def contact_list(request):
+    latest_products = Product.objects.order_by("created_at")[:5]
+    products = Product.objects.all()
 
     for product in latest_products:
         print(product)
 
-    return render(request, "home.html", {'latest_products': latest_products})
+    context = {"products": products}
+    return render(request, "products_list.html", context)
 
 
 def contacts(request):
@@ -23,10 +24,12 @@ def contacts(request):
     return render(request, "contacts.html")
 
 
-def some_view(request):
-    return reverse("contacts:home")
-
-
 def contact_view(request):
     contacts = Contact.objects.all()
-    return render(request, 'contacts.html', {'contacts': contacts})
+    return render(request, "contacts.html", {"contacts": contacts})
+
+
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    context = {"product": product}
+    return render(request, "product_detail.html", context)
