@@ -1,35 +1,36 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from catalog.models import Product, Contact
 
-
-def contact_list(request):
-    latest_products = Product.objects.order_by("created_at")[:5]
-    products = Product.objects.all()
-
-    for product in latest_products:
-        print(product)
-
-    context = {"products": products}
-    return render(request, "products_list.html", context)
+from django.views.generic import ListView, DetailView
+from django.views import View
 
 
-def contacts(request):
-    if request.method == "POST":
+class ProductsListView(ListView):
+    model = Product
+    template_name = "products_list.html"
+    context_object_name = "products"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["latest_products"] = Product.objects.order_by("created_at")[:5]
+        return context
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "product_detail.html"
+    context_object_name = "product"
+
+
+class ContactsView(View):
+    template_name = "contacts.html"
+
+    def get(self, request):
+        return render(request, "contacts.html")
+
+    def post(self, request):
         name = request.POST.get("name")
         phone = request.POST.get("phone")
         message = request.POST.get("message")
-
         return HttpResponse(f"Спасибо, {name}! Сообщение получено.")
-    return render(request, "contacts.html")
-
-
-def contact_view(request):
-    contacts = Contact.objects.all()
-    return render(request, "contacts.html", {"contacts": contacts})
-
-
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product": product}
-    return render(request, "product_detail.html", context)
