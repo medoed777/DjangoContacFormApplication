@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Блог</h1>
+    <p class="lead">Блог - это отличный вариант хранения ваших мыслей</p>
+    <a href="{% url 'blogs:blog_create' %}" class="btn btn-lg btn-block btn-outline-primary">Начать</a>
+</div>
+<div class="row text-center">
+    {% for blog in blogs %}
+    <div class="col-3">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">{{ blog.head }}</h4>
+            </div>
+            <img src="{{ blog.image | media_filter }}" style="max-height: 300px;">
+            <div class="card-body">
+                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                    <li>{{ blog.views }} просмотров</li>
+                </ul>
+                <a href="{% url 'blogs:blog_detail' blog.pk %}" class="btn btn-lg btn-block btn-outline-primary">Cмотреть</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
