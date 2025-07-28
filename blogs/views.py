@@ -20,10 +20,13 @@ class BlogsListView(ListView):
 
 class BlogUpdateView(UpdateView):
     model = Blogs
+    template_name = 'blogs/blog_update.html'
+    fields = ['head', 'content', 'image']
     success_url = reverse_lazy("blogs:blogs_list")
 
 class BlogDeleteView(DeleteView):
     model = Blogs
+    template_name = 'blogs/blog_delete.html'
     success_url = reverse_lazy("blogs:blogs_list")
 
 

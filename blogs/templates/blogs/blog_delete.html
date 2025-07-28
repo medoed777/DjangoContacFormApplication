@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block title %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h3>Удалить блог: {{ object.head }}</h3>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="col-6">
+    <div class="card">
+        <div class="card-body">
+            <h5>Вы уверены, что хотите удалить блог "{{ object.head }}"?</h5>
+            <p>Это действие нельзя будет отменить.</p>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <a href="{% url 'blogs:blogs_list' %}" class="btn btn-secondary">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

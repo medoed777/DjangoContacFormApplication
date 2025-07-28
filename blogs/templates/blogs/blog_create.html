@@ -12,17 +12,14 @@
         <div class="card-body">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
-
-                <button class="btn active" type="submit">
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button class="btn btn-primary" type="submit">
                     Создать
-
                 </button>
-
             </form>
         </div>
     </div>
 </div>
-
-
 {% endblock %}
