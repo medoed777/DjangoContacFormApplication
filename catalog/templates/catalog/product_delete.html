@@ -13,8 +13,10 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <button class="btn active btn-danger" type="submit">Удалить</button>
-        <a class="btn active" type="submit" href="{% url 'catalog:products_list' %}">Назад</a>
+        <button class="btn btn-danger" type="submit" >
+                    Удалить
+        </button>
+        <a class="btn active" type="submit" href="{% url 'catalog:product_update' product.pk %}">Назад</a>
     </form>
   </div>
 </div> </div>
