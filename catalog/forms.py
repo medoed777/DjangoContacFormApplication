@@ -1,6 +1,19 @@
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from catalog.models import Product
 
+
+WORD_VALID = [
+            "казино",
+            "криптовалюта",
+            "крипта",
+            "биржа",
+            "дешево",
+            "бесплатно",
+            "обман",
+            "полиция",
+            "радар",
+        ]
 
 class ProductForm(ModelForm):
     class Meta:
@@ -31,7 +44,7 @@ class ProductForm(ModelForm):
     def clean_price(self):
         price = self.cleaned_data.get("price")
         if price and price < 0:
-            self.add_error("price", f"Цена не может быть меньше 0")
+            raise ValidationError(f"Цена не может быть меньше 0")
         return price
 
     def clean(self):
@@ -39,23 +52,12 @@ class ProductForm(ModelForm):
         name = cleaned_data.get("name")
         description = cleaned_data.get("description")
 
-        word_valid = [
-            "казино",
-            "криптовалюта",
-            "крипта",
-            "биржа",
-            "дешево",
-            "бесплатно",
-            "обман",
-            "полиция",
-            "радар",
-        ]
 
         if name:
-            if any(word in name for word in word_valid):
-                self.add_error("name", f'Название не может содержать недопустимые слова: {", ".join(word_valid)}')
+            if any(word in name for word in WORD_VALID):
+                self.add_error("name", f'Название не может содержать недопустимые слова: {", ".join(WORD_VALID)}')
 
         if description:
-            if any(word in description for word in word_valid):
+            if any(word in description for word in WORD_VALID):
                 self.add_error("description",
-                               f'Описание не может содержать недопустимые слова: {", ".join(word_valid)}')
+                               f'Описание не может содержать недопустимые слова: {", ".join(WORD_VALID)}')
