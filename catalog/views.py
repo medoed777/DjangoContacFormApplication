@@ -1,14 +1,39 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy, reverse
+
+from catalog.forms import ProductForm
 from catalog.models import Product, Contact
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_create.html'
+    success_url = reverse_lazy("catalog:products_list")
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_update.html'
+
+    def get_success_url(self):
+        return reverse('catalog:product_detail', kwargs={'pk': self.object.pk})
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_delete.html'
+    success_url = reverse_lazy("catalog:products_list")
 
 
 class ProductsListView(ListView):
     model = Product
-    template_name = "products_list.html"
+    template_name = "catalog/products_list.html"
     context_object_name = "products"
 
     def get_context_data(self, **kwargs):
@@ -19,7 +44,7 @@ class ProductsListView(ListView):
 
 class ProductDetailView(DetailView):
     model = Product
-    template_name = "product_detail.html"
+    template_name = "catalog/product_detail.html"
     context_object_name = "product"
 
 
