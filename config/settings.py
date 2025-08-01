@@ -17,7 +17,7 @@ from pathlib import Path
 
 load_dotenv(override=True)
 
-from django.conf.global_settings import STATICFILES_DIRS, MEDIA_URL
+from django.conf.global_settings import STATICFILES_DIRS, MEDIA_URL, AUTH_USER_MODEL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "catalog",
     "blogs",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "users.User"
