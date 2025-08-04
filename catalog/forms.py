@@ -61,3 +61,9 @@ class ProductForm(ModelForm):
             if any(word in description for word in WORD_VALID):
                 self.add_error("description",
                                f'Описание не может содержать недопустимые слова: {", ".join(WORD_VALID)}')
+
+
+class ProductModeratorForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ("status",)

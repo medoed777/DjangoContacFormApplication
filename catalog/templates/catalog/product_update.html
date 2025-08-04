@@ -20,9 +20,11 @@
                 </button>
             </form>
 
-            <form method="post" action="{% url 'catalog:product_delete' object.pk %}" style="display:inline;">
+            <form method="post" action="{% url 'catalog:product_delete' product.pk %}" style="display:inline;">
                 {% csrf_token %}
-                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger" type="submit" >Удалить</a>
+                {% if perms.product.can_delete_product or user == product.owner %}
+                    <button class="btn btn-danger" type="submit">Удалить</button>
+                {% endif %}
             </form>
         </div>
     </div>

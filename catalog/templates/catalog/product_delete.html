@@ -7,19 +7,22 @@
 {% endblock %}
 
 {% block content %}
-<div class="bd-example m-0 border-0"> <div class="card" style="width: 50rem;">
-  <div class="card-body">
-    <h5 class="card-title">Удалить {{ object.name }}?</h5>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+<div class="bd-example m-0 border-0">
+    <div class="card" style="width: 50rem;">
+        <div class="card-body">
+            <h5 class="card-title">Удалить {{ object.name }}?</h5>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
 
-        <button class="btn btn-danger" type="submit" >
-                    Удалить
-        </button>
-        <a class="btn active" type="submit" href="{% url 'catalog:product_update' product.pk %}">Назад</a>
-    </form>
-  </div>
-</div> </div>
-
-
+                <div class="mb-3">
+                    <button class="btn btn-danger" type="submit">
+                        Удалить
+                    </button>
+                    <a class="btn btn-secondary" href="{% url 'catalog:product_update' object.pk %}">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
