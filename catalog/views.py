@@ -1,35 +1,64 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, ProductModeratorForm
 from catalog.models import Product, Contact
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 from django.views import View
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    template_name = 'catalog/product_create.html'
+    template_name = "catalog/product_create.html"
     success_url = reverse_lazy("catalog:products_list")
 
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
+        return super().form_valid(form)
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = 'catalog/product_update.html'
+    template_name = "catalog/product_update.html"
+
+    def has_permission(self):
+        user = self.request.user
+        obj = self.get_object()
+        return user == obj.owner or user.has_perm("catalog.can_unpublish_product")
 
     def get_success_url(self):
-        return reverse('catalog:product_detail', kwargs={'pk': self.object.pk})
+        return reverse("catalog:product_detail", kwargs={"pk": self.object.pk})
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm("catalog.can_unpublish_product"):
+            return ProductModeratorForm
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
-    template_name = 'catalog/product_delete.html'
+    template_name = "catalog/product_delete.html"
     success_url = reverse_lazy("catalog:products_list")
+
+    def has_permission(self):
+        user = self.request.user
+        obj = self.get_object()
+        return user == obj.owner or user.has_perm("catalog.delete_product")
 
 
 class ProductsListView(ListView):

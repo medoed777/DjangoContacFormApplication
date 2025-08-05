@@ -20,10 +20,8 @@
                 </button>
             </form>
 
-            <form method="post" action="{% url 'catalog:product_delete' object.pk %}" style="display:inline;">
-                {% csrf_token %}
-                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger" type="submit" >Удалить</a>
-            </form>
+            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger" type="submit">Удалить</a>
+            <a class="btn btn-secondary" href="{% url 'catalog:products_list' %}">Назад</a>
         </div>
     </div>
 </div>
