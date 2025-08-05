@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    user_name = None
+    username = None
     email = models.EmailField(unique=True, verbose_name="Email")
     avatar = models.ImageField(
         upload_to="products/image",

@@ -54,7 +54,11 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     model = Product
     template_name = "catalog/product_delete.html"
     success_url = reverse_lazy("catalog:products_list")
-    permission_required = "catalog.delete_product"
+
+    def has_permission(self):
+        user = self.request.user
+        obj = self.get_object()
+        return user == obj.owner or user.has_perm("catalog.delete_product")
 
 
 class ProductsListView(ListView):
