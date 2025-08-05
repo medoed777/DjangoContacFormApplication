@@ -16,6 +16,8 @@ from django.views.generic import (
 )
 from django.views import View
 
+from catalog.services import get_products_from_cache
+
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
@@ -61,6 +63,9 @@ class ProductsListView(ListView):
     model = Product
     template_name = "catalog/products_list.html"
     context_object_name = "products"
+
+    def get_queryset(self):
+        return get_products_from_cache()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
