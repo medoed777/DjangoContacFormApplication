@@ -1,9 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from blogs.models import Blogs
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blogs
     template_name = 'blogs/blog_create.html'
     fields = ['head', 'content', 'image']
@@ -18,7 +19,7 @@ class BlogsListView(ListView):
         return Blogs.objects.filter(is_active=True)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Blogs
     template_name = 'blogs/blog_update.html'
     fields = ['head', 'content', 'image']
@@ -27,13 +28,13 @@ class BlogUpdateView(UpdateView):
         return reverse('blogs:blog_detail', kwargs={'pk': self.object.pk})
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
     model = Blogs
     template_name = 'blogs/blog_delete.html'
     success_url = reverse_lazy("blogs:blogs_list")
 
 
-class BlogDetailView(DetailView):
+class BlogDetailView(LoginRequiredMixin, DetailView):
     model = Blogs
     template_name = "blogs/blog_detail.html"
 
