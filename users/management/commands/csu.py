@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = "Добавление супер пользователя"
 
     def handle(self, *args, **kwargs):
-        user = User.objects.create(email = 'admin@example.com')
+        user = User.objects.create(email="admin@example.com")
         user.set_password("1234")
         user.is_active = True
         user.is_staff = True

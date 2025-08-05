@@ -65,19 +65,21 @@ class Product(models.Model):
         verbose_name="Дата последнего изменения",
         help_text="Введите дату последнего изменения",
     )
-    owner = models.ForeignKey(User, verbose_name='Владелец', blank=True, null=True, help_text='Введите владельца',
-                              on_delete=models.CASCADE)
-    PUBLIC_STATUS = [
-        ('public', 'Опубликовано'),
-        ('unpublic', 'Не опубликовано')
-    ]
+    owner = models.ForeignKey(
+        User,
+        verbose_name="Владелец",
+        blank=True,
+        null=True,
+        help_text="Введите владельца",
+        on_delete=models.CASCADE,
+    )
+    PUBLIC_STATUS = [("public", "Опубликовано"), ("unpublic", "Не опубликовано")]
     status = models.CharField(
         max_length=20,
         choices=PUBLIC_STATUS,
-        default='public',
-        verbose_name='Статус публикации'
+        default="public",
+        verbose_name="Статус публикации",
     )
-
 
     class Meta:
         verbose_name = "Продукт"
@@ -90,7 +92,6 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 class Contact(models.Model):
