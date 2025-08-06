@@ -1,11 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 
 from catalog.forms import ProductForm, ProductModeratorForm
-from catalog.models import Product, Contact
+from catalog.models import Product, Contact, Category
 
 from django.views.generic import (
     ListView,
@@ -15,6 +14,8 @@ from django.views.generic import (
     DeleteView,
 )
 from django.views import View
+
+from catalog.services import get_products_from_cache, get_list_products
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -66,6 +67,9 @@ class ProductsListView(ListView):
     template_name = "catalog/products_list.html"
     context_object_name = "products"
 
+    def get_queryset(self):
+        return get_products_from_cache()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["latest_products"] = Product.objects.order_by("created_at")[:5]
@@ -89,3 +93,14 @@ class ContactsView(View):
         phone = request.POST.get("phone")
         message = request.POST.get("message")
         return HttpResponse(f"Спасибо, {name}! Сообщение получено.")
+
+
+class ProductsCategoryListDetailView(DetailView):
+    model = Category
+    template_name = "catalog/products_by_category.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cat_id = self.kwargs.get("pk")
+        context["category"] = get_list_products(cat_id)
+        return context
