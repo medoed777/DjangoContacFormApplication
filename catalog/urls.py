@@ -1,11 +1,41 @@
 from django.urls import path
-from catalog.apps import CatalogConfig
-from catalog.views import home, contacts
+from django.views.decorators.cache import cache_page
 
+from catalog.apps import CatalogConfig
+from .views import (
+    ProductsListView,
+    ProductDetailView,
+    ContactsView,
+    ProductCreateView,
+    ProductUpdateView,
+    ProductDeleteView,
+    ProductsCategoryListDetailView,
+)
 
 app_name = CatalogConfig.name
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('contacts/', contacts, name='contacts'),
+    path("", ProductsListView.as_view(), name="products_list"),
+    path(
+        "catalog/<int:pk>/",
+        ProductsCategoryListDetailView.as_view(),
+        name="catalog_product",
+    ),
+    path("product_create/", ProductCreateView.as_view(), name="product_create"),
+    path(
+        "product_update/<int:pk>/update/",
+        ProductUpdateView.as_view(),
+        name="product_update",
+    ),
+    path(
+        "product_update/<int:pk>/delete/",
+        ProductDeleteView.as_view(),
+        name="product_delete",
+    ),
+    path(
+        "products/<int:pk>/",
+        cache_page(60)(ProductDetailView.as_view()),
+        name="product_detail",
+    ),
+    path("contacts/", ContactsView.as_view(), name="contacts"),
 ]
